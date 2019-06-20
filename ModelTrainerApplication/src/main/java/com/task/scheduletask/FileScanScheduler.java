@@ -32,7 +32,6 @@ public class FileScanScheduler {
 	@Autowired
 	ExcelFileService excelFileService;
 
-	@SuppressWarnings("unchecked")
 	@Scheduled(initialDelay = 1000, fixedRate = 8000)
 	public void DirectoryScanScheduledMethod() throws Exception {
 		System.out.println("inside modelTrainerscheduledMethod()");
