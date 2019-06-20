@@ -9,20 +9,21 @@ import org.springframework.stereotype.Service;
 
 import com.task.entity.Player;
 import com.task.repository.PlayerRepository;
+import com.task.repository.PlayerRepositoryImpl;
 
 @Service
 public class PlayerWebServiceImpl implements PlayerWebService {
 	private static final Logger logger = LoggerFactory.getLogger(PlayerWebServiceImpl.class);
 	@Autowired
-	private PlayerRepository playerRepository;
+	private PlayerRepositoryImpl playerRepositoryImpl;
 
 	public List<Player> findPlayer(Player player) {
 		logger.debug("inside findPlayer(Player player) method :");
 		List<Player> players = null;
 		try {
-			players = (List<Player>) playerRepository.findCustomPayer(player);
+			players = (List<Player>) playerRepositoryImpl.findCustomPayer(player);
 		} catch (Exception e) {
-			logger.error("error :",e);
+			logger.error("error :", e);
 		}
 		return players;
 	}

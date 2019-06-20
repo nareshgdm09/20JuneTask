@@ -44,13 +44,13 @@ public class PlayerDBServiceImpl implements PlayerDBService {
 
 		try {
 			playerRepository.saveAll(players);
-		} catch (PlayerDataAccessException e) {
+		} catch (Exception e) {
 			logger.error("Error while saving players :", e);
 		}
 
-		Map<String,List<Player>> records = new HashMap<>();
-		records.put("correctRecords",players);
-		records.put("errorRecords",ErrorRecords);
+		Map<String, List<Player>> records = new HashMap<>();
+		records.put("correctRecords", players);
+		records.put("errorRecords", ErrorRecords);
 
 		return records;
 	}

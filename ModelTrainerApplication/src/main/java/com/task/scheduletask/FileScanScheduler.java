@@ -40,30 +40,24 @@ public class FileScanScheduler {
 		try {
 			jsonFiles = fileDirectoryService.getTypeFiles(Constants.JSONPATH, Constants.JSONEXT);
 			xmlFiles = fileDirectoryService.getTypeFiles(Constants.XMLPATH, Constants.XMLEXT);
-		} catch (Exception e) {
-			logger.error("Json or Xml direcetory not exist");
-			throw new DirectoriesNotFoundException("Json or Xml direcetory not exist at specifie path");
-		}
 
-		if (!jsonFiles.isEmpty() && !xmlFiles.isEmpty()) {
-			CommonUtil.findCommonFiles(jsonFiles, xmlFiles);
+			if (!jsonFiles.isEmpty() && !xmlFiles.isEmpty()) {
+				CommonUtil.findCommonFiles(jsonFiles, xmlFiles);
 
-			Map<String, List<Player>> validAndErrorRecords = PlayerDBService.savePlayers(jsonFiles, xmlFiles);
+				Map<String, List<Player>> validAndErrorRecords = PlayerDBService.savePlayers(jsonFiles, xmlFiles);
 
-			List<Player> validRecords = validAndErrorRecords.get("correctRecords");
-			List<Player> errorRecords = validAndErrorRecords.get("errorRecords");
+				List<Player> validRecords = validAndErrorRecords.get("correctRecords");
+				List<Player> errorRecords = validAndErrorRecords.get("errorRecords");
 
-			try {
 				if (!validRecords.isEmpty())
 					fileDirectoryService.moveCompletedFiles(validRecords);
 				if (!errorRecords.isEmpty())
 					fileDirectoryService.moveErrorFiles(errorRecords);
-			} catch (FileMoveException e) {
-				logger.error("Error while moving File");
-				e.printStackTrace();
+				excelFileService.generateExcelFile(validRecords);
 			}
-
-			excelFileService.generateExcelFile(validRecords);
+		} catch (Exception e) {
+			logger.error("Error occured at DirectoryScanScheduledMethod ", e);
+			e.printStackTrace();
 		}
 	}
 }
