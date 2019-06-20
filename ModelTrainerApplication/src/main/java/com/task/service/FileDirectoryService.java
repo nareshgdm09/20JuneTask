@@ -11,5 +11,5 @@ public interface FileDirectoryService {
 
 	void moveCompletedFiles(List<Player> playerRecords) throws FileMoveException;
 	
-	void moveErrorFiles(List<String> errorRecords) throws FileMoveException;
+	void moveErrorFiles(List<Player> errorRecords) throws FileMoveException;
 }

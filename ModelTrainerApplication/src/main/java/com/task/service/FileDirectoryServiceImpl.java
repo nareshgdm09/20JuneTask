@@ -61,16 +61,16 @@ public class FileDirectoryServiceImpl implements FileDirectoryService {
 	}
 
 	@Override
-	public void moveErrorFiles(List<String> errorRecords) throws FileMoveException {
+	public void moveErrorFiles(List<Player> errorRecords) throws FileMoveException {
 		logger.debug("inside moveErrorFiles(List<Player> playerRecords) method");
-		for (String errorRecord : errorRecords) {
+		for (Player errorRecord : errorRecords) {
 
 			try {
-				Path jsonSourcePath = Paths.get(Constants.JSONPATH + errorRecord + Constants.JSONEXT);
-				Path jsonDestinationPath = Paths.get(Constants.JSONERRORDIR + errorRecord + Constants.JSONEXT);
+				Path jsonSourcePath = Paths.get(Constants.JSONPATH + errorRecord.getId() + Constants.JSONEXT);
+				Path jsonDestinationPath = Paths.get(Constants.JSONERRORDIR + errorRecord.getId() + Constants.JSONEXT);
 
-				Path xmlSourcePath = Paths.get(Constants.XMLPATH + errorRecord + Constants.XMLEXT);
-				Path xmlDestinationPath = Paths.get(Constants.XMLERRORDIR + errorRecord + Constants.XMLEXT);
+				Path xmlSourcePath = Paths.get(Constants.XMLPATH + errorRecord.getId() + Constants.XMLEXT);
+				Path xmlDestinationPath = Paths.get(Constants.XMLERRORDIR + errorRecord.getId() + Constants.XMLEXT);
 
 				Files.move(jsonSourcePath, jsonDestinationPath, StandardCopyOption.REPLACE_EXISTING);
 				Files.move(xmlSourcePath, xmlDestinationPath, StandardCopyOption.REPLACE_EXISTING);

@@ -2,6 +2,7 @@ package com.task.scheduletask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,10 +50,10 @@ public class FileScanScheduler {
 		if (!jsonFiles.isEmpty() && !xmlFiles.isEmpty()) {
 			CommonUtil.findCommonFiles(jsonFiles, xmlFiles);
 
-			List<Object> validAndErrorRecords = PlayerDBService.savePlayers(jsonFiles, xmlFiles);
+			Map<String, List<Player>> validAndErrorRecords = PlayerDBService.savePlayers(jsonFiles, xmlFiles);
 
-			List<Player> validRecords = (List<Player>) validAndErrorRecords.get(0);
-			List<String> ErrorRecords = (List<String>) validAndErrorRecords.get(1);
+			List<Player> validRecords = validAndErrorRecords.get("correctRecords");
+			List<Player> ErrorRecords = validAndErrorRecords.get("errorRecords");
 
 			try {
 				if (!validRecords.isEmpty())

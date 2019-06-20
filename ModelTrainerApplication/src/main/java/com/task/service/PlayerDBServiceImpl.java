@@ -1,7 +1,9 @@
 package com.task.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,16 +28,16 @@ public class PlayerDBServiceImpl implements PlayerDBService {
 	ExcelFileService excelFileService;
 
 	@Override
-	public List<Object> savePlayers(List<String> jsonList, List<String> xmlList) {
+	public Map<String, List<Player>> savePlayers(List<String> jsonList, List<String> xmlList) {
 		logger.debug("inside of savePlayers(List<String> jsonList, List<String> xmlList) method");
 		List<Player> players = new ArrayList<>();
-		List<String> ErrorRecords = new ArrayList<>();
+		List<Player> ErrorRecords = new ArrayList<>();
 
 		jsonList.forEach(jsonString -> {
 			try {
 				players.add(CommonUtil.FileToObject(jsonString));
 			} catch (ErrorFileException e1) {
-				ErrorRecords.add(jsonString);
+				ErrorRecords.add(new Player(Integer.valueOf(jsonString), null, null, null, null, null));
 				logger.error("Json file processing error");
 			}
 		});
@@ -46,10 +48,9 @@ public class PlayerDBServiceImpl implements PlayerDBService {
 			logger.error("Error while saving players :", e);
 		}
 
-		
-		List<Object> records = new ArrayList<>();
-		records.add(players);
-		records.add(ErrorRecords);
+		Map<String,List<Player>> records = new HashMap<>();
+		records.put("correctRecords",players);
+		records.put("errorRecords",ErrorRecords);
 
 		return records;
 	}
