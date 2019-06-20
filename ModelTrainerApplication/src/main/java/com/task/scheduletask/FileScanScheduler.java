@@ -53,13 +53,13 @@ public class FileScanScheduler {
 			Map<String, List<Player>> validAndErrorRecords = PlayerDBService.savePlayers(jsonFiles, xmlFiles);
 
 			List<Player> validRecords = validAndErrorRecords.get("correctRecords");
-			List<Player> ErrorRecords = validAndErrorRecords.get("errorRecords");
+			List<Player> errorRecords = validAndErrorRecords.get("errorRecords");
 
 			try {
 				if (!validRecords.isEmpty())
 					fileDirectoryService.moveCompletedFiles(validRecords);
-				if (!ErrorRecords.isEmpty())
-					fileDirectoryService.moveErrorFiles(ErrorRecords);
+				if (!errorRecords.isEmpty())
+					fileDirectoryService.moveErrorFiles(errorRecords);
 			} catch (FileMoveException e) {
 				logger.error("Error while moving File");
 				e.printStackTrace();
