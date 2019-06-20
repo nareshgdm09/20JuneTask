@@ -65,13 +65,15 @@ public class ExcelFileServiceImpl implements ExcelFileService {
 				FileUtils.writeByteArrayToFile(file, xmlString);
 
 			} catch (Exception e) {
-				try {
-					workbook.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+
 				e.printStackTrace();
 				throw new ExcelFileCreationException("Excel file generating error");
+			} finally {
+				try {
+					workbook.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 
 		}
